@@ -3,154 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Strategi Marketing (Aman & Lengkap)</title>
+    <title>AI Marketing Strategist Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .spinner { border-top-color: #3498db; animation: spin 1s linear infinite; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .spinner { border-top-color: #6d28d9; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        #output-container h2, #follow-up-answer-container h2 { font-size: 1.5rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; }
-        #output-container h3, #follow-up-answer-container h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.5rem; }
-        #output-container ul, #follow-up-answer-container ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; }
-        #output-container ol, #follow-up-answer-container ol { list-style-type: decimal; margin-left: 1.5rem; margin-bottom: 1rem; }
+        .output-section h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #4c1d95;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+        }
+        .output-section h3 svg {
+            margin-right: 0.75rem;
+            width: 24px;
+            height: 24px;
+            color: #8b5cf6;
+        }
+        .output-section ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .output-section li {
+            background-color: #f5f3ff;
+            padding: 0.75rem 1rem;
+            border-left: 4px solid #8b5cf6;
+            margin-bottom: 0.5rem;
+            border-radius: 0 8px 8px 0;
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800">
+<body class="text-slate-800">
     <div class="container mx-auto p-4 md:p-8 max-w-7xl">
-        <header class="text-center mb-8">
-            <h1 class="text-4xl md:text-5xl font-bold text-slate-900">AI Strategi Marketing</h1>
-            <p class="mt-2 text-lg text-slate-600">Hai! Aku adalah AI Chief Marketing Officer kamu sekarang. Ayo kita bekerja sama! :)</p>
+        <!-- Perubahan: Header dengan gradien dan font lebih tebal -->
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 pb-2">
+                AI Marketing Strategist Pro
+            </h1>
+            <p class="mt-2 text-lg text-slate-600">Transformasikan data bisnismu menjadi strategi pemasaran yang powerful.</p>
         </header>
 
-        <main class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200">
-                <h2 class="text-2xl font-semibold mb-6 text-slate-900">Detail Bisnis Anda</h2>
+        <main class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Perubahan: Layout diubah menjadi 5 kolom untuk input -->
+            <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-xl border border-slate-200 transform hover:scale-[1.02] transition-transform duration-300">
+                <h2 class="text-2xl font-bold mb-6 text-slate-900">1. Masukkan Detail Bisnis</h2>
                 <div class="space-y-4">
-                    <div>
-                        <label for="product-name" class="block text-sm font-medium text-slate-700 mb-1">Nama Produk/Layanan</label>
-                        <input type="text" id="product-name" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition" placeholder="Contoh: Kopi Susu Aren Gula Merah">
-                    </div>
-                    <div>
-                        <label for="product-desc" class="block text-sm font-medium text-slate-700 mb-1">Deskripsi Singkat</label>
-                        <textarea id="product-desc" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition" placeholder="Jelaskan produk atau layanan Anda secara singkat."></textarea>
-                    </div>
-                    <div>
-                        <label for="target-audience" class="block text-sm font-medium text-slate-700 mb-1">Target Audiens</label>
-                        <textarea id="target-audience" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition" placeholder="Siapa pelanggan ideal Anda? (Contoh: Mahasiswa, pekerja kantoran)"></textarea>
-                    </div>
-                    <div>
-                        <label for="marketing-goals" class="block text-sm font-medium text-slate-700 mb-1">Tujuan Pemasaran Utama</label>
-                        <textarea id="marketing-goals" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition" placeholder="Apa yang ingin Anda capai? (Contoh: Meningkatkan brand awareness)"></textarea>
-                    </div>
-                    <div>
-                        <label for="usp" class="block text-sm font-medium text-slate-700 mb-1">Kelebihan Unik (Unique Selling Proposition)</label>
-                        <textarea id="usp" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition" placeholder="Apa yang membuat produk Anda berbeda dan lebih baik dari kompetitor?"></textarea>
-                    </div>
-                    <div>
-                        <label for="competitors" class="block text-sm font-medium text-slate-700 mb-1">Kompetitor Utama</label>
-                        <textarea id="competitors" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition" placeholder="Sebutkan beberapa pesaing utama Anda."></textarea>
-                    </div>
+                    <!-- Semua field input dipertahankan -->
+                    <div><label for="product-name" class="block text-sm font-medium text-slate-700 mb-1">Nama Produk/Layanan</label><input type="text" id="product-name" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 transition" placeholder="Contoh: Kopi Gula Aren Senja"></div>
+                    <div><label for="product-desc" class="block text-sm font-medium text-slate-700 mb-1">Deskripsi Singkat</label><textarea id="product-desc" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 transition" placeholder="Minuman kopi susu kekinian..."></textarea></div>
+                    <div><label for="target-audience" class="block text-sm font-medium text-slate-700 mb-1">Target Audiens</label><textarea id="target-audience" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 transition" placeholder="Mahasiswa dan pekerja kantoran..."></textarea></div>
+                    <div><label for="marketing-goals" class="block text-sm font-medium text-slate-700 mb-1">Tujuan Pemasaran Utama</label><textarea id="marketing-goals" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 transition" placeholder="Mendapatkan 100 pelanggan pertama..."></textarea></div>
+                    <div><label for="usp" class="block text-sm font-medium text-slate-700 mb-1">Kelebihan Unik (USP)</label><textarea id="usp" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 transition" placeholder="100% gula aren murni..."></textarea></div>
+                    <div><label for="competitors" class="block text-sm font-medium text-slate-700 mb-1">Kompetitor Utama</label><textarea id="competitors" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 transition" placeholder="Kopi Kenangan, Janji Jiwa..."></textarea></div>
                 </div>
-                <button id="generate-button" class="mt-8 w-full bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 flex items-center justify-center">
-                    Buat Strategi Pemasaran
+                <!-- Perubahan: Tombol dengan gradien dan ikon -->
+                <button id="generate-button" class="mt-8 w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L9 9.081V15.5a1 1 0 00.5.866l4 2.5a1 1 0 001 0l4-2.5a1 1 0 00.5-.866V9.081l6.212-2.161a1 1 0 000-1.84l-7-3zM14 14.114L11 15.632V9.95l3-1.04v5.204zM16 7.632L13 8.672 10 7.632 7 8.672 4 7.632l3-1.286L10 5.286l3 1.06L16 7.632z"/></svg>
+                    Buat Strategi Sekarang
                 </button>
             </div>
             
-            <div id="output-section" class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 flex flex-col">
-                <div class="flex-grow">
-                    <h2 class="text-2xl font-semibold text-slate-900 mb-4">Hasil Strategi dari AI</h2>
-                    <div id="output-placeholder" class="text-center text-slate-500 py-16 px-6 border-2 border-dashed border-slate-300 rounded-lg"><p class="mt-4 text-lg">Strategi pemasaran akan muncul di sini.</p></div>
-                    <div id="loader" class="hidden text-center py-16"><div class="spinner w-12 h-12 rounded-full border-4 border-slate-200 mx-auto"></div><p class="mt-4 text-lg font-medium text-slate-600">AI sedang berpikir...</p></div>
-                    <div id="output-container" class="prose max-w-none prose-slate"></div>
-                </div>
-                <div id="follow-up-section" class="hidden mt-8 pt-6 border-t border-slate-200">
-                     <h3 class="text-xl font-semibold mb-4 text-slate-900">Ada Pertanyaan Lanjutan?</h3>
-                     <textarea id="follow-up-question" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Tanyakan apa saja..."></textarea>
-                     <button id="ask-button" class="mt-4 w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700 flex items-center justify-center">Tanya Lanjutan</button>
-                     <div id="follow-up-loader" class="hidden text-center py-8"><div class="spinner w-10 h-10 rounded-full border-4 border-slate-200 mx-auto"></div><p class="mt-3 text-md font-medium text-slate-600">AI sedang mencari jawaban...</p></div>
-                     <div id="follow-up-answer-container" class="mt-6 prose max-w-none prose-slate"></div>
-                </div>
+            <!-- Perubahan: Layout diubah menjadi 7 kolom untuk output -->
+            <div class="lg:col-span-7 bg-white p-6 rounded-2xl shadow-xl border border-slate-200 flex flex-col">
+                <h2 class="text-2xl font-bold mb-2 text-slate-900">2. Hasil Strategi Anda</h2>
+                <div id="output-placeholder" class="text-center text-slate-500 py-24 px-6 border-2 border-dashed border-slate-300 rounded-lg mt-4"><p class="text-lg">Strategi pemasaran yang dibuat AI akan muncul di sini.</p></div>
+                <div id="loader" class="hidden text-center py-24 mt-4"><div class="spinner w-16 h-16 rounded-full border-4 border-slate-200 mx-auto"></div><p class="mt-4 text-lg font-medium text-slate-600">AI sedang meracik strategi terbaik...</p></div>
+                <div id="output-container" class="output-section mt-4"></div>
             </div>
         </main>
     </div>
 
     <script>
+        // --- Fungsi Frontend ---
         const generateButton = document.getElementById('generate-button');
         const outputContainer = document.getElementById('output-container');
         const loader = document.getElementById('loader');
         const outputPlaceholder = document.getElementById('output-placeholder');
-        const followUpSection = document.getElementById('follow-up-section');
-        const askButton = document.getElementById('ask-button');
-        const followUpQuestionInput = document.getElementById('follow-up-question');
-        const followUpLoader = document.getElementById('follow-up-loader');
-        const followUpAnswerContainer = document.getElementById('follow-up-answer-container');
 
-        let conversationHistory = [];
-        const systemPromptJSON = { "prompt":"Develop a tailored Marketing Strategy Document...", "role":"expert level chief-marketing-officer", "department":"entrepreneur", "task":"Create a Marketing Strategy Document", "task_description":"As a Chief Marketing Officer...", "rules":{"rule_1":"...", "rule_2":"...", "rule_3":"...", "rule_4":"...", "rule_5":"...", "rule_9":"..."}, "key_references":{"key_reference_1_title":"...", "key_reference_1_author":"...", "key_reference_1_year":"...", "key_reference_1_keyinsights":["..."], "key_reference_2_title":"...", "key_reference_2_author":"...", "key_reference_2_year":"...", "key_reference_2_keyinsights":["..."], "key_reference_3_title":"...", "key_reference_3_author":"...", "key_reference_3_year":"...", "key_reference_3_keyinsights":["..."]} };
-        const systemPrompt = JSON.stringify(systemPromptJSON);
+        // Fungsi baru untuk merender JSON yang terstruktur menjadi HTML yang rapi
+        function renderStrategy(data) {
+            let html = '';
 
-        function convertMarkdownToHtml(text) { return text.replace(/^### (.*$)/gim, '<h3>$1</h3>').replace(/^## (.*$)/gim, '<h2>$1</h2>').replace(/^# (.*$)/gim, '<h1>$1</h1>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>').replace(/^- (.*$)/gim, '<ul><li>$1</li></ul>').replace(/^\* (.*$)/gim, '<ul><li>$1</li></ul>').replace(/^(\d+)\. (.*$)/gim, '<ol><li>$2</li></ol>').replace(/<\/ul>\s*<ul>/g, '').replace(/<\/ol>\s*<ol>/g, '').replace(/\n/g, '<br>'); }
-
-        async function callApi(isFollowUp = false) {
-            const loaderToShow = isFollowUp ? followUpLoader : loader;
-            const buttonToDisable = isFollowUp ? askButton : generateButton;
-            const containerToClear = isFollowUp ? followUpAnswerContainer : outputContainer;
+            const icons = {
+                ringkasan: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>`,
+                audiens: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>`,
+                strategi: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>`,
+                kanal: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.368a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path></svg>`,
+                konten: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"></path></svg>`
+            };
             
-            loaderToShow.classList.remove('hidden');
-            buttonToDisable.disabled = true;
-            buttonToDisable.classList.add('opacity-50');
-            containerToClear.innerHTML = '';
-            if(!isFollowUp) {
-                outputPlaceholder.classList.add('hidden');
-                conversationHistory = [];
+            if (data.ringkasanEksekutif) {
+                html += `<h3>${icons.ringkasan}Ringkasan Eksekutif</h3><p class="mb-4">${data.ringkasanEksekutif}</p>`;
             }
+            if (data.analisisTargetAudiens) {
+                html += `<h3>${icons.audiens}Analisis Target Audiens</h3><p class="mb-4">${data.analisisTargetAudiens.deskripsi}</p><ul>${data.analisisTargetAudiens.poinPenting.map(item => `<li>${item}</li>`).join('')}</ul>`;
+            }
+            if (data.strategiUtama) {
+                html += `<h3>${icons.strategi}Strategi Utama</h3><ul>${data.strategiUtama.map(item => `<li><strong>${item.nama}:</strong> ${item.deskripsi}</li>`).join('')}</ul>`;
+            }
+            if (data.kanalPemasaran) {
+                html += `<h3>${icons.kanal}Kanal Pemasaran & Taktik</h3><ul>${data.kanalPemasaran.map(item => `<li><strong>${item.kanal}:</strong> ${item.taktik}</li>`).join('')}</ul>`;
+            }
+            if (data.ideKonten) {
+                html += `<h3>${icons.konten}Ide Konten Awal</h3><ul>${data.ideKonten.map(item => `<li><strong>${item.platform}:</strong> ${item.ide}</li>`).join('')}</ul>`;
+            }
+            
+            return html;
+        }
 
-            const productName = document.getElementById('product-name').value;
-            const productDesc = document.getElementById('product-desc').value;
-            const targetAudience = document.getElementById('target-audience').value;
-            const marketingGoals = document.getElementById('marketing-goals').value;
-            const usp = document.getElementById('usp').value;
-            const competitors = document.getElementById('competitors').value;
+        async function callApi() {
+            loader.classList.remove('hidden');
+            generateButton.disabled = true;
+            generateButton.classList.add('opacity-50');
+            outputContainer.innerHTML = '';
+            outputPlaceholder.classList.add('hidden');
+            
+            const allInputs = {
+                productName: document.getElementById('product-name').value,
+                productDesc: document.getElementById('product-desc').value,
+                targetAudience: document.getElementById('target-audience').value,
+                marketingGoals: document.getElementById('marketing-goals').value,
+                usp: document.getElementById('usp').value,
+                competitors: document.getElementById('competitors').value,
+            };
 
-            if (!isFollowUp && (!productName || !productDesc || !targetAudience || !marketingGoals)) {
-                outputContainer.innerHTML = `<div class="text-red-500 p-4 border border-red-300 bg-red-50 rounded-lg">Harap isi semua kolom yang wajib.</div>`;
-                loaderToShow.classList.add('hidden');
-                buttonToDisable.disabled = false;
-                buttonToDisable.classList.remove('opacity-50');
+            if (!allInputs.productName || !allInputs.productDesc || !allInputs.targetAudience || !allInputs.marketingGoals) {
+                outputContainer.innerHTML = `<div class="text-red-500 p-4 border border-red-300 bg-red-50 rounded-lg">Harap isi setidaknya 4 kolom pertama (Nama, Deskripsi, Target, Tujuan).</div>`;
+                loader.classList.add('hidden');
+                generateButton.disabled = false;
+                generateButton.classList.remove('opacity-50');
                 return;
             }
 
-            let userQuery;
-            if(isFollowUp) {
-                const question = followUpQuestionInput.value;
-                if(!question.trim()) { 
-                     followUpAnswerContainer.innerHTML = `<div class="text-red-500 p-4 border border-red-300 bg-red-50 rounded-lg">Harap tulis pertanyaan.</div>`;
-                     loaderToShow.classList.add('hidden');
-                     buttonToDisable.disabled = false;
-                     buttonToDisable.classList.remove('opacity-50');
-                     return;
-                }
-                userQuery = `Mengenai strategi yang Anda berikan, saya punya pertanyaan: "${question}"`;
-            } else {
-                 userQuery = `
-                    Saya seorang pengusaha yang membutuhkan Dokumen Strategi Pemasaran. Tolong buatkan dokumen tersebut berdasarkan detail berikut.
-                    - Nama Produk/Layanan: ${productName}
-                    - Deskripsi: ${productDesc}
-                    - Target Audiens: ${targetAudience}
-                    - Tujuan Pemasaran: ${marketingGoals}
-                    - Kelebihan Unik (USP): ${usp}
-                    - Kompetitor Utama: ${competitors}
-                `;
-            }
-
-            conversationHistory.push({ role: "user", parts: [{ text: userQuery }] });
-
             const payload = {
-                contents: conversationHistory,
-                systemInstruction: { parts: [{ text: systemPrompt }] },
+                inputs: allInputs,
             };
 
             try {
@@ -165,41 +158,22 @@
                     throw new Error(errorData.error || 'Unknown error from backend');
                 }
 
+                // Perubahan: Langsung parse JSON dari backend
                 const result = await response.json();
-                const candidate = result.candidates?.[0];
+                
+                // Perubahan: Panggil fungsi renderStrategy baru
+                outputContainer.innerHTML = renderStrategy(result);
 
-                if (candidate && candidate.content?.parts?.[0]?.text) {
-                    const generatedText = candidate.content.parts[0].text;
-                    conversationHistory.push({ role: "model", parts: [{ text: generatedText }] });
-                    
-                    const htmlContent = convertMarkdownToHtml(generatedText);
-                    if(isFollowUp) {
-                        followUpAnswerContainer.innerHTML = `<div class="p-4 mt-4 bg-slate-100 rounded-lg border border-slate-200">${htmlContent}</div>`;
-                        followUpQuestionInput.value = '';
-                    } else {
-                        outputContainer.innerHTML = htmlContent;
-                        followUpSection.classList.remove('hidden');
-                    }
-                } else {
-                    throw new Error('AI tidak memberikan respons yang valid.');
-                }
             } catch (error) {
-                const errorHtml = `<div class="text-red-500 p-4 border border-red-300 bg-red-50 rounded-lg">Terjadi kesalahan: ${error.message}</div>`;
-                if(isFollowUp) {
-                    followUpAnswerContainer.innerHTML = errorHtml;
-                } else {
-                    outputContainer.innerHTML = errorHtml;
-                }
-                conversationHistory.pop();
+                outputContainer.innerHTML = `<div class="text-red-500 p-4 border border-red-300 bg-red-50 rounded-lg">Terjadi kesalahan: ${error.message}</div>`;
             } finally {
-                loaderToShow.classList.add('hidden');
-                buttonToDisable.disabled = false;
-                buttonToDisable.classList.remove('opacity-50');
+                loader.classList.add('hidden');
+                generateButton.disabled = false;
+                generateButton.classList.remove('opacity-50');
             }
         }
 
-        generateButton.addEventListener('click', () => callApi(false));
-        askButton.addEventListener('click', () => callApi(true));
+        generateButton.addEventListener('click', callApi);
     </script>
 </body>
 </html>
