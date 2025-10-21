@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Strategi Marketing (Aman)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .spinner { border-top-color: #3498db; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        #output-container h2, #follow-up-answer-container h2 { font-size: 1.5rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; }
+        #output-container h3, #follow-up-answer-container h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.5rem; }
+        #output-container ul, #follow-up-answer-container ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; }
+        #output-container ol, #follow-up-answer-container ol { list-style-type: decimal; margin-left: 1.5rem; margin-bottom: 1rem; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900">AI Strategi Marketing (Versi Aman)</h1>
+            <p class="mt-2 text-lg text-slate-600">Hai! Aku adalah AI Chief Marketing Officer kamu. Datamu aman bersamaku.</p>
+        </header>
+        <main class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Input Section -->
+            <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200">
+                <h2 class="text-2xl font-semibold mb-6 text-slate-900">Detail Bisnis Anda</h2>
+                <div class="space-y-4">
+                    <div><label for="product-name" class="block text-sm font-medium text-slate-700 mb-1">Nama Produk/Layanan</label><input type="text" id="product-name" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Contoh: Kopi Susu Aren Gula Merah"></div>
+                    <div><label for="product-desc" class="block text-sm font-medium text-slate-700 mb-1">Deskripsi Singkat</label><textarea id="product-desc" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Jelaskan produk atau layanan Anda secara singkat."></textarea></div>
+                    <div><label for="target-audience" class="block text-sm font-medium text-slate-700 mb-1">Target Audiens</label><textarea id="target-audience" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Siapa pelanggan ideal Anda?"></textarea></div>
+                    <div><label for="marketing-goals" class="block text-sm font-medium text-slate-700 mb-1">Tujuan Pemasaran Utama</label><textarea id="marketing-goals" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Apa yang ingin Anda capai?"></textarea></div>
+                </div>
+                <button id="generate-button" class="mt-8 w-full bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 flex items-center justify-center">Buat Strategi Pemasaran</button>
+            </div>
+            <!-- Output Section -->
+            <div id="output-section" class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 flex flex-col">
+                <div class="flex-grow">
+                    <h2 class="text-2xl font-semibold text-slate-900 mb-4">Hasil Strategi dari AI</h2>
+                    <div id="output-placeholder" class="text-center text-slate-500 py-16 px-6 border-2 border-dashed border-slate-300 rounded-lg"><p class="mt-4 text-lg">Strategi pemasaran akan muncul di sini.</p></div>
+                    <div id="loader" class="hidden text-center py-16"><div class="spinner w-12 h-12 rounded-full border-4 border-slate-200 mx-auto"></div><p class="mt-4 text-lg font-medium text-slate-600">AI sedang berpikir...</p></div>
+                    <div id="output-container" class="prose max-w-none prose-slate"></div>
+                </div>
+                <div id="follow-up-section" class="hidden mt-8 pt-6 border-t border-slate-200">
+                     <h3 class="text-xl font-semibold mb-4 text-slate-900">Ada Pertanyaan Lanjutan?</h3>
+                     <textarea id="follow-up-question" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Tanyakan apa saja..."></textarea>
+                     <button id="ask-button" class="mt-4 w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-700 flex items-center justify-center">Tanya Lanjutan</button>
+                     <div id="follow-up-loader" class="hidden text-center py-8"><div class="spinner w-10 h-10 rounded-full border-4 border-slate-200 mx-auto"></div><p class="mt-3 text-md font-medium text-slate-600">AI sedang mencari jawaban...</p></div>
+                     <div id="follow-up-answer-container" class="mt-6 prose max-w-none prose-slate"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const generateButton = document.getElementById('generate-button');
+        const outputContainer = document.getElementById('output-container');
+        const loader = document.getElementById('loader');
+        const outputPlaceholder = document.getElementById('output-placeholder');
+        const followUpSection = document.getElementById('follow-up-section');
+        const askButton = document.getElementById('ask-button');
+        const followUpQuestionInput = document.getElementById('follow-up-question');
+        const followUpLoader = document.getElementById('follow-up-loader');
+        const followUpAnswerContainer = document.getElementById('follow-up-answer-container');
+
+        let conversationHistory = [];
+        const systemPromptJSON = { "prompt":"Develop a tailored Marketing Strategy Document...", "role":"expert level chief-marketing-officer", "department":"entrepreneur", "task":"Create a Marketing Strategy Document", "task_description":"As a Chief Marketing Officer...", "rules":{"rule_1":"...", "rule_2":"...", "rule_3":"...", "rule_4":"...", "rule_5":"...", "rule_9":"..."}, "key_references":{"key_reference_1_title":"...", "key_reference_1_author":"...", "key_reference_1_year":"...", "key_reference_1_keyinsights":["..."], "key_reference_2_title":"...", "key_reference_2_author":"...", "key_reference_2_year":"...", "key_reference_2_keyinsights":["..."], "key_reference_3_title":"...", "key_reference_3_author":"...", "key_reference_3_year":"...", "key_reference_3_keyinsights":["..."]} };
+        const systemPrompt = JSON.stringify(systemPromptJSON);
+
+        function convertMarkdownToHtml(text) { return text.replace(/^### (.*$)/gim, '<h3>$1</h3>').replace(/^## (.*$)/gim, '<h2>$1</h2>').replace(/^# (.*$)/gim, '<h1>$1</h1>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>').replace(/^- (.*$)/gim, '<ul><li>$1</li></ul>').replace(/^\* (.*$)/gim, '<ul><li>$1</li></ul>').replace(/^(\d+)\. (.*$)/gim, '<ol><li>$2</li></ol>').replace(/<\/ul>\s*<ul>/g, '').replace(/<\/ol>\s*<ol>/g, '').replace(/\n/g, '<br>'); }
+
+        async function callApi(isFollowUp = false) {
+            const loaderToShow = isFollowUp ? followUpLoader : loader;
+            const buttonToDisable = isFollowUp ? askButton : generateButton;
+            const containerToClear = isFollowUp ? followUpAnswerContainer : outputContainer;
+            
+            loaderToShow.classList.remove('hidden');
+            buttonToDisable.disabled = true;
+            buttonToDisable.classList.add('opacity-50');
+            containerToClear.innerHTML = '';
+            if(!isFollowUp) {
+                outputPlaceholder.classList.add('hidden');
+                conversationHistory = [];
+            }
+
+            const productName = document.getElementById('product-name').value;
+            const productDesc = document.getElementById('product-desc').value;
+            const targetAudience = document.getElementById('target-audience').value;
+            const marketingGoals = document.getElementById('marketing-goals').value;
+
+            if (!isFollowUp && (!productName || !productDesc || !targetAudience || !marketingGoals)) {
+                outputContainer.innerHTML = `<div class="text-red-500 p-4 border border-red-300 bg-red-50 rounded-lg">Harap isi semua kolom yang wajib.</div>`;
+                loaderToShow.classList.add('hidden');
+                buttonToDisable.disabled = false;
+                buttonToDisable.classList.remove('opacity-50');
+                return;
+            }
+
+            let userQuery;
+            if(isFollowUp) {
+                const question = followUpQuestionInput.value;
+                if(!question.trim()) { 
+                     followUpAnswerContainer.innerHTML = `<div class="text-red-500 p-4 border border-red-300 bg-red-50 rounded-lg">Harap tulis pertanyaan.</div>`;
+                     loaderToShow.classList.add('hidden');
+                     buttonToDisable.disabled = false;
+                     buttonToDisable.classList.remove('opacity-50');
+                     return;
+                }
+                userQuery = `Mengenai strategi yang Anda berikan, saya punya pertanyaan: "${question}"`;
+            } else {
+                 userQuery = `Buatkan Dokumen Strategi Pemasaran berdasarkan detail berikut: \n- Nama: ${productName}\n- Deskripsi: ${productDesc}\n- Target: ${targetAudience}\n- Tujuan: ${marketingGoals}`;
+            }
+
+            conversationHistory.push({ role: "user", parts: [{ text: userQuery }] });
+
+            const payload = {
+                contents: conversationHistory,
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+            };
+
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Unknown error from backend');
+                }
+
+                const result = await response.json();
+                const candidate = result.candidates?.[0];
+
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    const generatedText = candidate.content.parts[0].text;
+                    conversationHistory.push({ role: "model", parts: [{ text: generatedText }] });
+                    
+                    const htmlContent = convertMarkdownToHtml(generatedText);
+                    if(isFollowUp) {
+                        followUpAnswerContainer.innerHTML = `<div class="p-4 mt-4 bg-slate-100 rounded-lg border border-slate-200">${htmlContent}</div>`;
+                        followUpQuestionInput.value = '';
+                    } else {
+                        outputContainer.innerHTML = htmlContent;
+                        followUpSection.classList.remove('hidden');
+                    }
+                } else {
+                    throw new Error('AI tidak memberikan respons yang valid.');
+                }
+            } catch (error) {
+                const errorHtml = `<div class="text-red-500 p-4 border border-red-300 bg-red-50 rounded-lg">Terjadi kesalahan: ${error.message}</div>`;
+                if(isFollowUp) {
+                    followUpAnswerContainer.innerHTML = errorHtml;
+                } else {
+                    outputContainer.innerHTML = errorHtml;
+                }
+                conversationHistory.pop();
+            } finally {
+                loaderToShow.classList.add('hidden');
+                buttonToDisable.disabled = false;
+                buttonToDisable.classList.remove('opacity-50');
+            }
+        }
+
+        generateButton.addEventListener('click', () => callApi(false));
+        askButton.addEventListener('click', () => callApi(true));
+    </script>
+</body>
+</html>
+
