@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Marketing Strategist Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MEMANGGIL PENERJEMAH PROFESIONAL -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -13,27 +15,33 @@
         .spinner { border-top-color: #6d28d9; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* Styling untuk Hasil Strategi Utama */
         .output-section h3 { font-size: 1.25rem; font-weight: 700; color: #4c1d95; margin-top: 1.5rem; margin-bottom: 0.75rem; display: flex; align-items: center; }
         .output-section h3 svg { margin-right: 0.75rem; width: 24px; height: 24px; color: #8b5cf6; }
         .output-section ul { list-style-type: none; padding-left: 0; }
         .output-section li { background-color: #f5f3ff; padding: 0.75rem 1rem; border-left: 4px solid #8b5cf6; margin-bottom: 0.5rem; border-radius: 0 8px 8px 0; }
         
-        /* --- STYLING BARU UNTUK JAWABAN LANJUTAN --- */
         #follow-up-answer-container .response-card {
-            background-color: #f0fdf4; /* Green background */
-            border: 1px solid #bbf7d0;
-            border-left: 4px solid #22c55e;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
+            background-color: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid #22c55e;
+            padding: 1.5rem; border-radius: 8px; margin-top: 1rem;
         }
-        #follow-up-answer-container h3 { font-size: 1.1rem; font-weight: 600; color: #15803d; margin-top:0; margin-bottom: 0.5rem; }
-        #follow-up-answer-container h4 { font-size: 1rem; font-weight: 600; color: #166534; margin-bottom: 0.5rem; }
-        #follow-up-answer-container strong { color: #16a34a; }
+        #follow-up-answer-container h2 { font-size: 1.2rem; font-weight: 700; color: #15803d; margin-top:0; margin-bottom: 0.75rem; border-bottom: 2px solid #a7f3d0; padding-bottom: 0.5rem;}
+        #follow-up-answer-container h3 { font-size: 1.1rem; font-weight: 600; color: #15803d; margin-top: 1.25rem; margin-bottom: 0.5rem; }
+        #follow-up-answer-container strong { color: #166534; }
         #follow-up-answer-container ul { list-style-type: disc; padding-left: 1.5rem; margin-top: 0.5rem; }
         #follow-up-answer-container li { padding: 0.25rem 0; margin-bottom: 0; border: none; background: none; }
-
+        
+        /* --- GAYA BARU UNTUK TABEL AGAR RAPI --- */
+        #follow-up-answer-container table {
+            width: 100%; border-collapse: collapse; margin-top: 1rem; margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        #follow-up-answer-container th, #follow-up-answer-container td {
+            border: 1px solid #ddd; padding: 12px; text-align: left;
+        }
+        #follow-up-answer-container th {
+            background-color: #dcfce7; color: #166534; font-weight: 600;
+        }
+        #follow-up-answer-container tr:nth-child(even) { background-color: #f7fee7; }
     </style>
 </head>
 <body class="text-slate-800">
@@ -47,6 +55,7 @@
             <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-xl border border-slate-200">
                 <h2 class="text-2xl font-bold mb-6 text-slate-900">1. Masukkan Detail Bisnis</h2>
                 <div class="space-y-4">
+                     <!-- Input fields remain the same -->
                     <div><label for="product-name" class="block text-sm font-medium text-slate-700 mb-1">Nama Produk/Layanan</label><input type="text" id="product-name" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 transition" placeholder="Contoh: Kopi Gula Aren Senja"></div>
                     <div><label for="product-desc" class="block text-sm font-medium text-slate-700 mb-1">Deskripsi Singkat</label><textarea id="product-desc" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 transition" placeholder="Minuman kopi susu kekinian..."></textarea></div>
                     <div><label for="target-audience" class="block text-sm font-medium text-slate-700 mb-1">Target Audiens</label><textarea id="target-audience" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 transition" placeholder="Mahasiswa dan pekerja kantoran..."></textarea></div>
@@ -81,6 +90,7 @@
     </div>
 
     <script>
+        // --- Bagian deklarasi variabel tetap sama ---
         const generateButton = document.getElementById('generate-button');
         const outputContainer = document.getElementById('output-container');
         const loader = document.getElementById('loader');
@@ -90,11 +100,10 @@
         const followUpQuestionInput = document.getElementById('follow-up-question');
         const followUpLoader = document.getElementById('follow-up-loader');
         const followUpAnswerContainer = document.getElementById('follow-up-answer-container');
-        
         let conversationHistory = [];
 
         function renderStrategy(data) {
-            let html = '';
+             let html = '';
             const icons = { ringkasan: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>', audiens: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>', strategi: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>', kanal: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.368a3 3 0 105.367 2.684 3 3 0 00-5.367 2.684z"></path></svg>', konten: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"></path></svg>' };
             if (data.ringkasanEksekutif) html += `<h3>${icons.ringkasan}Ringkasan Eksekutif</h3><p class="mb-4">${data.ringkasanEksekutif}</p>`;
             if (data.analisisTargetAudiens) html += `<h3>${icons.audiens}Analisis Target Audiens</h3><p class="mb-4">${data.analisisTargetAudiens.deskripsi}</p><ul>${data.analisisTargetAudiens.poinPenting.map(item => `<li>${item}</li>`).join('')}</ul>`;
@@ -104,26 +113,15 @@
             return html;
         }
 
-        // --- FUNGSI YANG DIPERBAIKI SEPENUHNYA ---
+        // --- MENGGANTI FUNGSI LAMA DENGAN PANGGILAN KE MARKED.JS ---
         function convertMarkdownToHtml(text) {
-            let html = text || '';
-            // Konversi headings (####, ###)
-            html = html.replace(/^#### (.*$)/gim, '<h4>$1</h4>');
-            html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
-            // Konversi bold (**text**)
-            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            // Konversi italic (*text*)
-            html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-            // Konversi unordered lists (* or -)
-            html = html.replace(/^\s*[\-\*] (.*)/gm, '<ul><li>$1</li></ul>');
-            html = html.replace(/<\/ul>\s*<ul>/g, ''); // Gabungkan list yang berdekatan
-            // Konversi baris baru menjadi <br>, tapi tidak di dalam list
-            html = html.replace(/\n/g, '<br>');
-            html = html.replace(/<br>\s*<ul>/g, '<ul>'); // Hapus <br> sebelum list
-            html = html.replace(/<\/ul><br>/g, '</ul>'); // Hapus <br> setelah list
-            return html;
+            // Cukup panggil library marked.js yang sudah kita impor.
+            // Opsi 'gfm: true' mengaktifkan mode GitHub Flavored Markdown untuk tabel.
+            // Opsi 'breaks: true' mengubah baris baru menjadi <br>.
+            return marked.parse(text || '', { gfm: true, breaks: true });
         }
         
+        // --- Fungsi sendRequest tetap sama, tidak perlu diubah ---
         async function sendRequest(isFollowUp = false) {
             const loaderToShow = isFollowUp ? followUpLoader : loader;
             const buttonToDisable = isFollowUp ? askButton : generateButton;
@@ -169,10 +167,7 @@
                 const textResponse = result.text;
 
                 if (!isFollowUp) {
-                    conversationHistory = [
-                        { role: "user", parts: [{ text: JSON.stringify(payload.inputs) }] },
-                        { role: "model", parts: [{ text: textResponse || "" }] }
-                    ];
+                    conversationHistory = [ { role: "user", parts: [{ text: JSON.stringify(payload.inputs) }] }, { role: "model", parts: [{ text: textResponse || "" }] } ];
                 } else {
                      conversationHistory.push({ role: "model", parts: [{ text: textResponse || "" }] });
                 }
