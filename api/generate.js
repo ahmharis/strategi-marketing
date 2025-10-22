@@ -1,4 +1,4 @@
-// api/generate.js - Backend dengan prompt JSON yang disempurnakan
+// api/generate.js - Versi yang disempurnakan dengan prompt yang lebih baik dan penanganan error yang lebih kuat
 
 export default async function handler(request, response) {
   if (request.method !== 'POST') {
@@ -8,60 +8,47 @@ export default async function handler(request, response) {
   try {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      return response.status(500).json({ error: 'API key not configured on server' });
+      return response.status(500).json({ error: 'API key tidak terkonfigurasi di server.' });
     }
 
-    const { inputs } = request.body;
-    if (!inputs) {
-        return response.status(400).json({ error: 'Missing "inputs" in request body' });
+    const { inputs, conversationHistory } = request.body;
+    
+    let contents;
+    let systemInstructionText = `Anda adalah seorang CMO (Chief Marketing Officer) AI yang sangat ahli. Tugas Anda adalah memberikan analisis dan strategi pemasaran yang tajam, terstruktur, dan actionable.`;
+    let forceJson = false;
+    
+    if (inputs) {
+      // Ini adalah permintaan awal untuk membuat strategi.
+      // Prompt ini lebih langsung dan to-the-point.
+      const userQuery = `
+        Analisis data bisnis ini dan berikan output HANYA dalam format JSON yang valid, tanpa teks atau penjelasan tambahan di luar JSON.
+        Data Bisnis: ${JSON.stringify(inputs)}
+      `;
+      contents = [{ parts: [{ text: userQuery }] }];
+      systemInstructionText += ` Anda harus mengisi struktur JSON yang diberikan dengan analisis mendalam.`;
+      forceJson = true; // Kita memaksa output menjadi JSON
+    } else if (conversationHistory) {
+      // Ini adalah pertanyaan follow-up
+      contents = conversationHistory;
+      systemInstructionText += ` Jawablah pertanyaan lanjutan secara natural dan konversasional berdasarkan riwayat percakapan.`;
+    } else {
+      return response.status(400).json({ error: 'Request body harus berisi "inputs" atau "conversationHistory"' });
     }
-
-    // --- PROMPT YANG DISEMPURNAKAN ---
-    // Memberikan instruksi yang lebih kaya dan kontekstual untuk setiap field JSON.
-    const userQuery = `
-      Anda adalah seorang Chief Marketing Officer (CMO) AI yang sangat strategis dan kreatif. Tugas Anda adalah mengubah data mentah bisnis menjadi sebuah rencana pemasaran yang tajam, actionable, dan meyakinkan.
-      
-      Gunakan data bisnis berikut:
-      - Nama Produk: ${inputs.productName}
-      - Deskripsi: ${inputs.productDesc}
-      - Target Audiens: ${inputs.targetAudience}
-      - Tujuan Pemasaran: ${inputs.marketingGoals}
-      - Kelebihan Unik (USP): ${inputs.usp}
-      - Kompetitor Utama: ${inputs.competitors}
-
-      Analisis data tersebut secara mendalam dan berikan jawaban HANYA dalam format JSON yang valid, tanpa teks lain di luar JSON. Pastikan setiap bagian diisi dengan analisis yang relevan dan berkualitas tinggi.
-      
-      Struktur JSON yang harus digunakan:
-      {
-        "ringkasanEksekutif": "Tulis sebuah paragraf ringkasan yang kuat dan profesional, seolah-olah Anda mempresentasikannya kepada investor. Jelaskan secara singkat masalah, solusi, dan potensi pasar.",
-        "analisisTargetAudiens": {
-          "deskripsi": "Buat deskripsi 'persona' yang hidup untuk target audiens. Beri mereka nama, jelaskan keseharian mereka, masalah yang mereka hadapi, dan mengapa produk ini relevan bagi mereka.",
-          "poinPenting": ["Sebutkan 3 wawasan psikografis atau demografis paling penting tentang audiens ini.", "Poin insight kedua.", "Poin insight ketiga."]
-        },
-        "strategiUtama": [
-          { "nama": "Nama Strategi Inti #1", "deskripsi": "Jelaskan strategi ini dengan jelas. Fokus pada 'mengapa' strategi ini penting berdasarkan USP dan data kompetitor." },
-          { "nama": "Nama Strategi Inti #2", "deskripsi": "Jelaskan strategi kedua yang mendukung strategi pertama, dengan fokus pada bagaimana cara mencapai tujuan pemasaran." }
-        ],
-        "kanalPemasaran": [
-          { "kanal": "Pilih kanal paling relevan #1 (e.g., Instagram)", "taktik": "Berikan 2-3 taktik spesifik dan kreatif untuk kanal ini. Contoh: 'Kolaborasi dengan 5 micro-influencer di niche kuliner untuk review jujur'." },
-          { "kanal": "Pilih kanal paling relevan #2 (e.g., TikTok)", "taktik": "Berikan 2-3 taktik spesifik dan kreatif untuk kanal ini. Contoh: 'Buat challenge #SenjaDiTanganmu dimana user memposting foto kopi dengan latar senja'." },
-          { "kanal": "Pilih kanal paling relevan #3 (e.g., Komunitas Lokal)", "taktik": "Berikan 2-3 taktik spesifik dan kreatif untuk kanal ini. Contoh: 'Sponsori acara mingguan di co-working space terdekat dengan menyediakan produk gratis'." }
-        ],
-        "ideKonten": [
-          { "platform": "Instagram Reels/TikTok", "ide": "Berikan satu ide video pendek yang menarik dan mudah dibuat." },
-          { "platform": "Instagram Feed", "ide": "Berikan satu ide untuk post gambar atau carousel yang menonjolkan USP produk." }
-        ]
-      }
-    `;
-
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
     
     const payload = {
-      contents: [{ parts: [{ text: userQuery }] }],
-      generationConfig: {
-        responseMimeType: "application/json",
-      }
+      contents: contents,
+      systemInstruction: {
+        parts: [{ text: systemInstructionText }]
+      },
+      generationConfig: {}
     };
+
+    // Hanya terapkan responseMimeType jika diminta secara eksplisit
+    if (forceJson) {
+      payload.generationConfig.responseMimeType = "application/json";
+    }
+
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
     const fetchOptions = {
       method: 'POST',
@@ -70,22 +57,28 @@ export default async function handler(request, response) {
     };
 
     const geminiResponse = await fetch(apiUrl, fetchOptions);
+    const geminiResult = await geminiResponse.json();
 
     if (!geminiResponse.ok) {
-      const errorData = await geminiResponse.json();
-      console.error('Gemini API Error:', errorData);
-      return response.status(geminiResponse.status).json({ error: 'Failed to fetch response from Gemini API', details: errorData });
+      console.error('Gemini API Error:', geminiResult);
+      const errorMessage = geminiResult?.error?.message || 'Gagal mengambil respons dari Gemini API';
+      return response.status(geminiResponse.status).json({ error: errorMessage });
     }
     
-    const geminiResult = await geminiResponse.json();
-    const jsonText = geminiResult.candidates[0].content.parts[0].text;
-    const structuredData = JSON.parse(jsonText);
-
-    response.status(200).json(structuredData);
+    // --- PENANGANAN ERROR BARU YANG PENTING ---
+    // Cek apakah AI benar-benar memberikan jawaban atau diblokir oleh filter keamanan
+    if (!geminiResult.candidates || geminiResult.candidates.length === 0 || !geminiResult.candidates[0].content) {
+        console.warn('Gemini response blocked or empty:', geminiResult);
+        return response.status(500).json({ error: 'AI tidak memberikan respons yang valid. Ini bisa terjadi karena filter keamanan atau permintaan yang ambigu. Coba ubah isian Anda.' });
+    }
+    
+    const textResponse = geminiResult.candidates[0].content.parts[0].text;
+    
+    response.status(200).json({ text: textResponse });
 
   } catch (error) {
     console.error('Internal Server Error:', error);
-    response.status(500).json({ error: 'An internal server error occurred.' });
+    response.status(500).json({ error: 'Terjadi kesalahan internal pada server.' });
   }
 }
 
